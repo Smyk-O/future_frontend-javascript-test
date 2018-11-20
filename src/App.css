@@ -1,0 +1,54 @@
+.container {
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.btn {
+  width: 100px;
+  height: 40px;
+  margin: 10px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+}
+
+.item_table {
+  display: flex;
+  border-bottom: 1px solid rgba(189, 189, 189, 0.50);
+}
+
+.item_table_title {
+  background: #bdbdbd;
+}
+
+.item_table div {
+  height: 30px;
+  padding: 0 30px;
+  margin: 2px;
+  display: flex;
+  align-items: center;
+}
+
+.table_id {
+  width: 30px !important;
+}
+
+.table_firstName, .table_lastName {
+  width: 120px;
+}
+
+.table_email, .table_phone {
+  width: 220px;
+}
+
+.loading, .choose {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 30px;
+}
