@@ -6,6 +6,7 @@ const list_little_url = 'http://www.filltext.com/?rows=32&id={number|1000}&first
 const list_large_url = 'http://www.filltext.com/?rows=1000&id={number|1000}&firstName={firstName}&delay=3&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}';
 
 class App extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -13,11 +14,11 @@ class App extends Component {
       list_page_active: false,
       number_of_pages: false,
       item_target: false
-
     };
   }
 
   loadingList = async (listSize) => {
+    this.setState({ items: false, number_of_pages: false, item_target: false });
 
     if (listSize === "little") {
       const list_url = await
@@ -51,13 +52,13 @@ class App extends Component {
       const item = this.state.item_target;
       return (
         <div className="fullInfo">
-        <div>Выбран пользователь <b>{item.firstName + " " + item.lastName}</b></div>
-        <div>Описание:</div>
-        <textarea placeholder={item.description}></textarea>
-        <div>Адрес проживания: <b>item.address.streetAddress</b></div>
-        <div>Город: <b>item.address.city</b></div>
-        <div>Провинция/штат: <b>item.address.state</b></div>
-        <div>Индекс: <b>item.address.zip</b></div>
+          <div>Выбран пользователь <b>{item.firstName + " " + item.lastName}</b></div>
+          <div>Описание:</div>
+          <textarea placeholder={item.description}></textarea>
+          <div>Адрес проживания: <b>{item.address.streetAddress}</b></div>
+          <div>Город: <b>{item.address.city}</b></div>
+          <div>Провинция/штат: <b>{item.address.state}</b></div>
+          <div>Индекс: <b>{item.address.zip}</b></div>
         </div>
       )
     }
@@ -89,18 +90,18 @@ class App extends Component {
   }
 
   getPage() {
-    let page_btn = []
-    for (let i = 0; i < this.state.number_of_pages; i++) {
-      page_btn.push(
-        <PaginationItem key={i + "page"} onClick={(() => this.setState({ list_page_active: i + 1 }))}>
-          <PaginationLink>
-            {i + 1}
-          </PaginationLink>
-        </PaginationItem>
-      )
-    }
 
     if (this.state.number_of_pages > 1) {
+      let page_btn = []
+      for (let i = 0; i < this.state.number_of_pages; i++) {
+        page_btn.push(
+          <PaginationItem key={i + "page"} onClick={(() => this.setState({ list_page_active: i + 1 }))}>
+            <PaginationLink>
+              {i + 1}
+            </PaginationLink>
+          </PaginationItem>
+        )
+      }
       return (
         <Pagination aria-label="Page navigation example" >
           <PaginationItem onClick={(() => this.setState({ list_page_active: this.state.list_page_active - 1 }))}>
@@ -122,8 +123,8 @@ class App extends Component {
     return (
       <Container className="app">
         <div className="button-group">
-          <Button outline color="secondary" onClick={(() => { this.loadingList("little"); this.setState({ items: false }) })}>little list</Button>
-          <Button outline color="secondary" onClick={(() => { this.loadingList("large"); this.setState({ items: false }) })}>large list</Button>
+          <Button outline color="secondary" onClick={(() => this.loadingList("little"))}>little list</Button>
+          <Button outline color="secondary" onClick={(() => this.loadingList("large"))}>large list</Button>
         </div>
 
         <div>
