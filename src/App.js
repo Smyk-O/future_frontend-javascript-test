@@ -125,9 +125,9 @@ class App extends Component {
 
   SearchItem = async (searchText) => {
     await this.setState({
-      items: this.state.save_items
+      items: this.state.save_items,
+      number_of_pages: Math.ceil(this.state.save_items.length / 30)
     });
-
     if (searchText) {
       const ScreenedItems = this.state.items.filter((item) => {
         let itemText = item.firstName + " " + item.lastName + " " + item.email + " " + item.phone;
@@ -136,10 +136,9 @@ class App extends Component {
         }
       });
       if (ScreenedItems.length > 0) {
-        const list_page_size = Math.ceil(ScreenedItems.length / 30);
         this.setState({
           items: ScreenedItems,
-          number_of_pages: list_page_size,
+          number_of_pages: Math.ceil(ScreenedItems.length / 30),
           list_page_active: 1
         });
       }
