@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Container, Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { Button, Container, Pagination, PaginationItem, PaginationLink, InputGroup, InputGroupAddon, Input } from 'reactstrap';
 import './App.css';
 
 const list_little_url = 'http://www.filltext.com/?rows=32&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}';
@@ -10,10 +10,11 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [],
+      items: true,
       list_page_active: false,
       number_of_pages: false,
-      item_target: false
+      item_target: false,
+      save_items: []
     };
   }
 
@@ -28,7 +29,8 @@ class App extends Component {
       this.setState({
         items: list_data,
         list_page_active: 1,
-        number_of_pages: list_page_size
+        number_of_pages: list_page_size,
+        save_items: list_data
       });
     }
 
@@ -40,7 +42,8 @@ class App extends Component {
       this.setState({
         items: list_data,
         list_page_active: 1,
-        number_of_pages: list_page_size
+        number_of_pages: list_page_size,
+        save_items: list_data
       });
     }
 
@@ -82,7 +85,8 @@ class App extends Component {
             <div className="table_phone">{item.phone}</div>
           </div >
         )
-      });
+      }
+      );
 
     } if (!this.state.items) {
       return (<div className="loading">loading...</div>)
@@ -119,6 +123,42 @@ class App extends Component {
     return null
   }
 
+  SearchItem = async (searchText) => {
+    await this.setState({
+      items: this.state.save_items
+    });
+
+    if (searchText) {
+      const ScreenedItems = this.state.items.filter((item) => {
+        let itemText = item.firstName + " " + item.lastName + " " + item.email + " " + item.phone;
+        if (itemText.toLowerCase().search(searchText.toLowerCase()) !== -1) {
+          return item
+        }
+      });
+      if (ScreenedItems.length > 0) {
+        const list_page_size = Math.ceil(ScreenedItems.length / 30);
+        this.setState({
+          items: ScreenedItems,
+          number_of_pages: list_page_size,
+          list_page_active: 1
+        });
+      }
+    }
+  }
+
+
+  GeSearchInput() {
+
+    return (
+      <InputGroup>
+        <Input placeholder="search" />
+        <InputGroupAddon addonType="append">
+          <Button type="submit" color="secondary" onClick={(() => this.SearchItem(document.getElementsByTagName("input")[0].value))}>Найти</Button>
+        </InputGroupAddon>
+      </InputGroup>
+    )
+  }
+
   render() {
     return (
       <Container className="app">
@@ -126,7 +166,7 @@ class App extends Component {
           <Button outline color="secondary" onClick={(() => this.loadingList("little"))}>little list</Button>
           <Button outline color="secondary" onClick={(() => this.loadingList("large"))}>large list</Button>
         </div>
-
+        {this.GeSearchInput()}
         <div>
           <div className="item_table item_table_title">
             <div className="table_id">id</div>

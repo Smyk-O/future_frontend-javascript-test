@@ -61,3 +61,15 @@
   width: 400px;
   height: 150px;
 }
+
+.input-group {
+  margin: 20px;
+}
+
+.form-control {
+  height: 40px !important;
+}
+
+.btn-secondary {
+  margin: 0;
+}
